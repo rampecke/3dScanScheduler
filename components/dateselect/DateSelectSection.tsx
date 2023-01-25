@@ -1,11 +1,22 @@
-import { FunctionComponent, useState } from "react";
+import {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { format, isBefore, Interval, add } from "date-fns";
 import { DateOption } from "./DateOption";
-import Link from "next/link";
+
+import { ConditionalLinkButton } from "../general/ConditionalLinkButton";
+import { ConditionalButton } from "../general/ConditionalButton";
 
 type DateSelectSectionProps = {
   className?: string;
   selectedDate: Date;
+  selectedAppointment?: Interval;
+  setSelectedAppointment: Dispatch<SetStateAction<Interval | undefined>>;
+  onSelect?: () => void;
 };
 
 const getAppointments = (selectedDate: Date, steps: number) => {
@@ -34,10 +45,8 @@ const getAppointments = (selectedDate: Date, steps: number) => {
 };
 
 export const DateSelectSection: FunctionComponent<DateSelectSectionProps> = (
-  props: DateSelectSectionProps
+  props
 ) => {
-  const [selectedAppointment, setSelectedAppointment] = useState<Interval>();
-
   return (
     <div className={`${props.className}`}>
       <h2 className="flex items-center font-semibold text-gray-900">
@@ -49,18 +58,21 @@ export const DateSelectSection: FunctionComponent<DateSelectSectionProps> = (
             <DateOption
               key={appointment.start.toString()}
               appointment={appointment}
-              onClick={() => setSelectedAppointment(appointment)}
+              onClick={() => props.setSelectedAppointment(appointment)}
+              selectedAppointment={props.selectedAppointment}
             ></DateOption>
           );
         })}
       </div>
 
       <div className="pb-2 pt-6">
-        <Link href="/test">
-          <h2 className="0 flex-auto rounded-full bg-primary-600 p-2 text-center font-semibold text-white">
-            Termin buchen
-          </h2>
-        </Link>
+        <ConditionalButton
+          className="w-full flex-auto rounded-full bg-primary-600 p-2 text-center font-semibold  text-white"
+          condition={props.selectedAppointment !== undefined}
+          onClick={props.onSelect}
+        >
+          Termin auswählen
+        </ConditionalButton>
       </div>
     </div>
   );

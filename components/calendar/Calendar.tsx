@@ -7,6 +7,7 @@ import {
 import { format, isPast, isSameDay } from "date-fns";
 import { CalendarDay } from "./CalendarDay";
 import { getDaysInMonth } from "../../utils/calendar";
+import de from "date-fns/locale/de";
 
 type CalendarProps = {
   className?: string;
@@ -54,51 +55,26 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
       : setSelectedDate(newDate);
   };
 
-  const mappingMonth = [
-    "Januar",
-    "Februar",
-    "März",
-    "April",
-    "Mai",
-    "Juni",
-    "Juli",
-    "August",
-    "September",
-    "Oktober",
-    "November",
-    "Dezember",
-  ];
-
-  const mappingWeekdays = [
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag",
-    "Sonntag",
-  ];
-
   return (
     <div className={`${className}`}>
       <div className="flex items-center">
         <h2 className="flex-auto font-semibold text-gray-900">
-          {`${mappingMonth.at(displayedMonth)} ${displayedYear}`}
+          {format(selectedDate, "MMMM yyyy", { locale: de })}
         </h2>
 
-        <button
-          type="button"
-          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-2 pl-1 text-primary-400 hover:text-primary-600"
-          onClick={() => setSelectedDate(new Date())}
-        >
-          <CalendarDaysIcon className="h-5 w-5" aria-hidden="true" />
-        </button>
         <button
           type="button"
           className="-my-1.5 flex flex-none items-center justify-center p-2 text-gray-400 hover:text-gray-500"
           onClick={lastMonth}
         >
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-2 pl-1 text-primary-400 hover:text-primary-600"
+          onClick={() => setSelectedDate(new Date())}
+        >
+          <CalendarDaysIcon className="h-5 w-5" aria-hidden="true" />
         </button>
         <button
           type="button"
@@ -109,8 +85,10 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
         </button>
       </div>
       <div className="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
-        {mappingWeekdays.map((day) => (
-          <div key={day}>{day.substring(0, 2)}</div>
+        {daysOfMonth.slice(0, 7).map((day) => (
+          <div key={day.toString()}>
+            {format(day, "EEEEEE", { locale: de })}
+          </div>
         ))}
       </div>
       <div className="mt-2 grid grid-cols-7 text-sm">

@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
+          50: "#ecfeff",
           200: "#bae6fd",
           400: "#38bdf8",
           600: "#0284c7",
@@ -15,5 +16,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
