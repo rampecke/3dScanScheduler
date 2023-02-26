@@ -53,7 +53,7 @@ export const DateSelectSection: FunctionComponent<DateSelectSectionProps> = (
         {`Freie Termine für ${format(props.selectedDate, "dd.MM.yyyy")}`}
       </h2>
       <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-3">
-        {getAppointments(props.selectedDate, 15).map((appointment) => {
+        {getAppointments(props.selectedDate, 20).map((appointment) => {
           return (
             <DateOption
               key={appointment.start.toString()}
@@ -63,16 +63,6 @@ export const DateSelectSection: FunctionComponent<DateSelectSectionProps> = (
             ></DateOption>
           );
         })}
-      </div>
-
-      <div className="pb-2 pt-6">
-        <ConditionalButton
-          className="w-full flex-auto rounded-full bg-primary-600 p-2 text-center font-semibold  text-white"
-          condition={props.selectedAppointment !== undefined}
-          onClick={props.onSelect}
-        >
-          Termin auswählen
-        </ConditionalButton>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ export enum ViewTyp {
 }
 
 export enum BookingState {
-  Terminauswahl,
-  Informationen,
-  Bestätigung,
+  Terminauswahl = "Terminauswahl",
+  Informationen = "Persönliche Daten",
+  Bestätigung = "Bestätigung",
 }

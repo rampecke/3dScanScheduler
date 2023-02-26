@@ -12,6 +12,11 @@ export default function Home() {
   );
   const [selectedAppointment, setSelectedAppointment] = useState<Interval>();
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
   const content = () => {
     switch (bookingState) {
       case BookingState.Terminauswahl:
@@ -56,6 +61,15 @@ export default function Home() {
                   ? new Date(selectedAppointment.end)
                   : new Date()
               }
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
+              email={email}
+              setEmail={setEmail}
+              phone={phone}
+              setPhone={setPhone}
+              setBookingState={setBookingState}
             ></ContactFormSplitScreen>
           </div>
         );
@@ -77,7 +91,12 @@ export default function Home() {
 
   return (
     <PageOverlay>
-      <BookingSideBar>{content()}</BookingSideBar>
+      <BookingSideBar
+        bookingState={bookingState}
+        setBookingState={setBookingState}
+      >
+        {content()}
+      </BookingSideBar>
     </PageOverlay>
   );
 }

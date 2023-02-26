@@ -16,17 +16,18 @@ export const ConditionalButton: FunctionComponent<ConditionalButtonProps> = ({
 }) => {
   return (
     <div>
-      {condition ? (
-        <button className={`${className}`} type="button" onClick={onClick}>
-          {children}
-        </button>
-      ) : (
-        <div
-          className={`${className} cursor-default select-none bg-opacity-50`}
-        >
-          {children}
-        </div>
-      )}
+      <button
+        className={
+          condition
+            ? `${className}`
+            : `${className} cursor-default select-none bg-opacity-50`
+        }
+        type="button"
+        onClick={onClick}
+        disabled={!condition}
+      >
+        {children}
+      </button>
     </div>
   );
 };

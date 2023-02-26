@@ -13,12 +13,14 @@ type CalendarProps = {
   className?: string;
   selectedDate: Date;
   setSelectedDate: Dispatch<SetStateAction<Date>>;
+  disablePast?: boolean;
 };
 
 export const Calendar: FunctionComponent<CalendarProps> = ({
   className,
   selectedDate,
   setSelectedDate,
+  disablePast,
 }: CalendarProps) => {
   const displayedMonth = selectedDate.getMonth();
   const displayedYear = selectedDate.getFullYear();
@@ -106,6 +108,7 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
                   ? {}
                   : setSelectedDate(day)
               }
+              disablePast={disablePast}
             ></CalendarDay>
           </div>
         ))}
