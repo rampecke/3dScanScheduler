@@ -37,9 +37,13 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
       newMonth === today.getMonth() ? today.getDate() : 1
     );
 
-    !isSameDay(newDate, today) && isPast(newDate)
-      ? {}
-      : setSelectedDate(newDate);
+    if (!disablePast) {
+      setSelectedDate(newDate);
+    } else {
+      !isSameDay(newDate, today) && isPast(newDate)
+        ? {}
+        : setSelectedDate(newDate);
+    }
   };
 
   const lastMonth = () => {
@@ -52,9 +56,13 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
       newMonth === today.getMonth() ? today.getDate() : 1
     );
 
-    !isSameDay(newDate, today) && isPast(newDate)
-      ? {}
-      : setSelectedDate(newDate);
+    if (!disablePast) {
+      setSelectedDate(newDate);
+    } else {
+      !isSameDay(newDate, today) && isPast(newDate)
+        ? {}
+        : setSelectedDate(newDate);
+    }
   };
 
   return (
@@ -103,11 +111,15 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
               day={day}
               selectedDate={selectedDate}
               today={today}
-              onClick={() =>
-                !isSameDay(day, today) && isPast(day)
-                  ? {}
-                  : setSelectedDate(day)
-              }
+              onClick={() => {
+                if (!disablePast) {
+                  setSelectedDate(day);
+                } else {
+                  !!isSameDay(day, today) && isPast(day)
+                    ? {}
+                    : setSelectedDate(day);
+                }
+              }}
               disablePast={disablePast}
             ></CalendarDay>
           </div>

@@ -39,7 +39,11 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
         className.push("hover:bg-primary-200");
         className.push("font-semibold");
       } else {
-        if (!isCurrentMonth(day) || (isPast(day) && !isSameDay(day, today))) {
+        if (
+          disablePast
+            ? !isCurrentMonth(day) || (isPast(day) && !isSameDay(day, today))
+            : !isCurrentMonth(day)
+        ) {
           className.push("text-gray-400");
         } else {
           className.push("text-gray-900");

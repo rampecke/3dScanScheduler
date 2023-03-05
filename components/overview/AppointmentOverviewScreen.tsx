@@ -1,17 +1,4 @@
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  EllipsisHorizontalIcon,
-} from "@heroicons/react/20/solid";
-import {
-  Fragment,
-  FunctionComponent,
-  SetStateAction,
-  useRef,
-  useState,
-} from "react";
-import { Menu, Transition } from "@headlessui/react";
+import { FunctionComponent, useState } from "react";
 import { HeaderOverview } from "./HeaderOverview";
 import { ViewTyp } from "../Enums";
 import { CalendarOverview } from "./CalendarOverview";
@@ -20,10 +7,6 @@ import { Calendar } from "../calendar";
 type AppointmentOverviewScreenProps = {
   className?: string;
 };
-
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export const AppointmentOverviewScreen: FunctionComponent<
   AppointmentOverviewScreenProps
@@ -45,6 +28,7 @@ export const AppointmentOverviewScreen: FunctionComponent<
           <Calendar
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            disablePast={false}
           ></Calendar>
         </div>
       </div>

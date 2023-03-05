@@ -23,7 +23,7 @@ export const DateSelect: FunctionComponent<DateSelectProps> = (props) => {
             className="md:pr-14"
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            disablePast={false}
+            disablePast={true}
           ></Calendar>
         }
         right={
