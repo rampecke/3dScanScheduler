@@ -22,7 +22,6 @@ export const AppointmentOverviewScreen: FunctionComponent<
         selectedViewTyp={selectedViewTyp}
         setSelectedViewTyp={setSelectedAppointment}
       ></HeaderOverview>
-      
       <div className="isolate flex flex-auto overflow-hidden bg-white">
         <CalendarOverview selectedDate={selectedDate}></CalendarOverview>
         <div className="hidden w-1/2 max-w-md flex-none border-l border-gray-100 py-10 px-8 md:block">
