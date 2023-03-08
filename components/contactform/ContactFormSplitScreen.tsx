@@ -24,19 +24,38 @@ type ContactFormFormSplitScreenProps = {
 export const ContactFormSplitScreen: FunctionComponent<
   ContactFormFormSplitScreenProps
 > = (props) => {
+  const bookAppointment = () => {
+    
+    const appointment = {
+      firstName: props.firstName,
+      lastName: props.lastName,
+      email: props.email,
+      phone: props.phone,
+      startDate: props.startDate?.toISOString(),
+      endDate: props.endDate?.toISOString(),
+    }
+
+    fetch("/api/appointments", {method: "POST", body: JSON.stringify({appointment})}).then((res) => res.json()).then((res) => {
+      console.log(res);
+
+      props.setBookingState(BookingState.Bestätigung);
+    });
+
+  };
+
   return (
-    <div>
+    <div className="max-w-md px-4 sm:px-7 md:max-w-5xl">
       <div className="w-full divide-x md:flex md:divide-gray-200">
         <div className="">
           <CheckDateSection
-            className="mt-12 flex-1 px-4 pr-4 md:mt-0 md:pl-14"
+            className="mt-12 flex-1 px-4 pr-14 md:mt-0 md:pl-14"
             startDate={props.startDate}
             endDate={props.endDate}
           ></CheckDateSection>
         </div>
 
         <ContactInputSection
-          className="flex-1 px-4 pl-4 md:pr-14"
+          className="flex-1 px-4 pl-14 md:pr-14"
           firstName={props.firstName}
           setFirstName={props.setFirstName}
           lastName={props.lastName}
@@ -54,7 +73,7 @@ export const ContactFormSplitScreen: FunctionComponent<
         left={
           <div className="p-4">
             <ConditionalButton
-              className="w-full rounded-full bg-primary-600 p-2 text-center font-semibold  text-white"
+              className="w-full rounded-full bg-white p-2 text-center font-semibold  text-primary-600 border-2"
               condition={true}
               onClick={() => {
                 props.setBookingState(BookingState.Terminauswahl);
@@ -74,11 +93,9 @@ export const ContactFormSplitScreen: FunctionComponent<
                 props.email !== (undefined || "") &&
                 props.phone !== (undefined || "")
               }
-              onClick={() => {
-                props.setBookingState(BookingState.Bestätigung);
-              }}
+              onClick={bookAppointment}
             >
-              Termin überprüfen
+              Termin buchen
             </ConditionalButton>
           </div>
         }
