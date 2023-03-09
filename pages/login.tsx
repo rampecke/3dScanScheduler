@@ -1,8 +1,15 @@
-import { AppointmentOverviewScreen } from "../components/overview/AppointmentOverviewScreen";
 import Head from "next/head";
 import { PageOverlay } from "../components/general/PageOverlay";
+import { getCsrfToken, signIn } from "next-auth/react";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/router";
 
-export default function LoginPage() {
+export default function LoginPage({
+  csrfToken,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+  const { error } = router.query;
+
   return (
     <PageOverlay>
       <Head>
@@ -16,20 +23,25 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            className="space-y-6"
+            action="/api/auth/callback/credentials"
+            method="POST"
+          >
+            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+
             <div>
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Benutzername
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="username"
+                  name="username"
+                  type="text"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -63,9 +75,22 @@ export default function LoginPage() {
                 Einlogen
               </button>
             </div>
+            {!!error && (
+              <div className="text-red-500">
+                Anmeldedaten ungültig. Bitte überprüfen Sie Ihre Angaben.
+              </div>
+            )}
           </form>
         </div>
       </div>
     </PageOverlay>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
 }
