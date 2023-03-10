@@ -5,65 +5,62 @@ import {
   useEffect,
   useState,
 } from "react";
-import { format, isBefore, Interval, add } from "date-fns";
+import { format } from "date-fns";
 import { DateOption } from "./DateOption";
 
-import { ConditionalLinkButton } from "../general/ConditionalLinkButton";
-import { ConditionalButton } from "../general/ConditionalButton";
+import { AvailableAppointment } from "../../models/appointment";
 
 type DateSelectSectionProps = {
   className?: string;
   selectedDate: Date;
-  selectedAppointment?: Interval;
-  setSelectedAppointment: Dispatch<SetStateAction<Interval | undefined>>;
+  selectedAppointment?: AvailableAppointment;
+  setSelectedAppointment: Dispatch<SetStateAction<AvailableAppointment | undefined>>;
   onSelect?: () => void;
-};
-
-const getAppointments = (selectedDate: Date, steps: number) => {
-  let startDate = new Date(selectedDate);
-  startDate.setHours(9);
-  startDate.setMinutes(0);
-  startDate.setSeconds(0);
-
-  const endDate = new Date(selectedDate);
-  endDate.setHours(18);
-  endDate.setMinutes(0);
-  endDate.setSeconds(0);
-
-  var appointments: Interval[] = [];
-
-  while (isBefore(startDate, endDate)) {
-    appointments.push({
-      start: startDate,
-      end: add(startDate, { minutes: steps }),
-    });
-
-    startDate = add(startDate, { minutes: steps });
-  }
-
-  return appointments;
 };
 
 export const DateSelectSection: FunctionComponent<DateSelectSectionProps> = (
   props
 ) => {
+  const [availableAppointments, setAvailableAppointment] = useState<AvailableAppointment[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Load the available appointments when the selected date changes
+
+    setLoading(true);
+    // Fetch the available appointments from the backend for the selected date
+    const url = new URLSearchParams();
+    url.append("date", props.selectedDate.toISOString());
+    const request = fetch("/api/appointments/available?" +  url.toString());
+
+    request.then((res) => res.json()).then((res) => {
+      // Update the available appointments
+      setAvailableAppointment(res);
+    }).finally(() => setLoading(false));
+    
+   }, [props.selectedDate]);
+
   return (
     <div className={`${props.className}`}>
       <h2 className="flex items-center font-semibold text-gray-900">
         {`Freie Termine für ${format(props.selectedDate, "dd.MM.yyyy")}`}
       </h2>
-      <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-3">
-        {getAppointments(props.selectedDate, 20).map((appointment) => {
+      <div className="mt-10">
+      
+        {loading ? <div className="text-sm text-gray-600">Termine laden...</div> : availableAppointments.length > 0 ? 
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+            {availableAppointments.map((appointment) => {
           return (
             <DateOption
-              key={appointment.start.toString()}
+              key={appointment.startDate.toString()}
               appointment={appointment}
               onClick={() => props.setSelectedAppointment(appointment)}
               selectedAppointment={props.selectedAppointment}
             ></DateOption>
           );
         })}
+        </div> : <div className="text-sm text-gray-600">Keine Termine verfügbar</div>}
+        </div>
       </div>
-    </div>
   );
 };

@@ -5,12 +5,13 @@ import { DateSelect } from "../components/dateselect";
 import { BookingState } from "../components/Enums";
 import { BookingSideBar } from "../components/general/BookingSideBar";
 import { PageOverlay } from "../components/general/PageOverlay";
+import { AvailableAppointment } from "../models/appointment";
 
 export default function Home() {
   const [bookingState, setBookingState] = useState<BookingState>(
     BookingState.Terminauswahl
   );
-  const [selectedAppointment, setSelectedAppointment] = useState<Interval>();
+  const [selectedAppointment, setSelectedAppointment] = useState<AvailableAppointment>();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -53,12 +54,12 @@ export default function Home() {
             <ContactFormSplitScreen
               startDate={
                 selectedAppointment
-                  ? new Date(selectedAppointment.start)
+                  ? new Date(selectedAppointment.startDate)
                   : new Date()
               }
               endDate={
                 selectedAppointment
-                  ? new Date(selectedAppointment.end)
+                  ? new Date(selectedAppointment.endDate)
                   : new Date()
               }
               firstName={firstName}

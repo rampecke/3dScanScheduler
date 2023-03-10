@@ -8,6 +8,7 @@ type CalendarDayProps = {
   today: Date;
   onClick: () => void;
   disablePast?: boolean;
+  disabled?: boolean;
 };
 
 export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
@@ -17,6 +18,7 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
   today,
   onClick,
   disablePast,
+  disabled
 }) => {
   const isCurrentMonth = (date: Date) => {
     return date.getMonth() === selectedDate.getMonth() ? true : false;
@@ -63,7 +65,7 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
     <button
       type="button"
       onClick={onClick}
-      disabled={disablePast ? isPast(day) && !isSameDay(day, today) : false}
+      disabled={disabled || (disablePast ? isPast(day) && !isSameDay(day, today) : false)}
       className={`${className} ${createClassName()}`}
     >
       <div>{day.getDate()}</div>

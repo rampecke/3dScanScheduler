@@ -10,6 +10,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { format, subDays } from "date-fns";
 import { de } from "date-fns/locale";
 import { ViewTyp } from "../Enums";
+import Link from "next/link"
 
 type HeaderOverviewProps = {
   className?: string;
@@ -127,12 +128,12 @@ export const HeaderOverview: FunctionComponent<HeaderOverviewProps> = ({
             </Transition>
           </Menu>
           <div className="ml-6 h-6 w-px bg-gray-300" />
-          <button
-            type="button"
+          <Link
+            href="/"
             className="ml-6 rounded-md border border-transparent bg-primary-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-400"
           >
             Neuer Termin
-          </button>
+          </Link>
         </div>
       </div>
     </header>
